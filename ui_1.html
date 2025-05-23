@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Wanderlust - Travel Booking UI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+  <style>
+    /* Hide mobile emoji tabs on medium and up, hide original tabs on small */
+    #emojiTabs { display: none; }
+    @media (max-width: 768px) {
+      #originalTabs { display: none; }
+      #emojiTabs { display: flex !important; }
+    }
+  </style>
+</head>
+<body
+  class="bg-cover bg-center min-h-screen"
+  style="background-image: url('image4.jpeg');"
+>
+  <!-- Header -->
+  <header class="bg-black bg-opacity-80 text-white py-4 shadow-md">
+    <div class="max-w-7xl mx-auto px-4">
+      <h1 class="text-3xl font-bold text-yellow-400">Wanderlust</h1>
+    </div>
+  </header>
+
+  <!-- Main UI Container -->
+  <div class="bg-opacity-60 min-h-screen p-8">
+    <!-- Booking UI Header -->
+    <div class="text-center text-white mb-10">
+      <h1 class="text-4xl font-bold">Book cheap flights and save up to 50% OFF</h1>
+      <p class="mt-2 text-lg">
+        <span class="font-bold text-yellow-400">30+</span> quotes in seconds ·
+        <span class="font-bold text-yellow-400">$287+</span> savings on each ticket ·
+        <span class="font-bold text-yellow-400">100%</span> free service ·
+        <span class="font-bold text-yellow-400">3+ mln</span> tickets sold
+      </p>
+    </div>
+
+    <!-- ORIGINAL Tabs Navigation (hidden on mobile) -->
+    <div
+      id="originalTabs"
+      class="flex justify-center space-x-6 text-white text-lg mb-6"
+    >
+      <button
+        data-tab="Flights"
+        onclick="selectTab(this)"
+        class="font-semibold border-b-2 border-white"
+      >
+        Flights
+      </button>
+      <button data-tab="Hotels" onclick="selectTab(this)" class="text-gray-300 hover:text-white-800">
+        Hotels
+      </button>
+      <button data-tab="Hotels + Flights" onclick="selectTab(this)" class="text-gray-300 hover:text-white-800">
+        Hotels + Flights
+      </button>
+      <button data-tab="Excursions" onclick="selectTab(this)" class="text-gray-300 hover:text-white-800">
+        Excursions
+      </button>
+      <button data-tab="Cars" onclick="selectTab(this)" class="text-gray-300 hover:text-white-800">
+        Cars
+      </button>
+    </div>
+
+    <!-- MOBILE-ONLY Emoji Tabs Navigation -->
+    <div
+      id="emojiTabs"
+      class="justify-center space-x-6 text-white text-lg mb-6 hidden"
+    >
+      <button
+        data-tab="Flights"
+        onclick="selectTab(this)"
+        class="font-semibold border-b-2 border-white"
+        title="Flights"
+      >
+        ✈️
+      </button>
+      <button data-tab="Hotels" onclick="selectTab(this)" class="text-gray-300 hover:text-white" title="Hotels">
+        🏨
+      </button>
+      <button data-tab="Hotels + Flights" onclick="selectTab(this)" class="text-gray-300 hover:text-white" title="Hotels + Flights">
+        🏨 + ✈️ 
+      </button>
+      <button data-tab="Excursions" onclick="selectTab(this)" class="text-gray-300 hover:text-white" title="Excursions">
+        🛣️
+      </button>
+      <button data-tab="Cars" onclick="selectTab(this)" class="text-gray-300 hover:text-white" title="Cars">
+        🚗
+      </button>
+    </div>
+
+    <!-- Flights Tab -->
+    <div
+      id="Flights"
+      class="max-w-4xl mx-auto bg-blue-800 p-6 rounded-lg shadow-lg text-white"
+    >
+      <div class="flex space-x-6 mb-4">
+        <label><input type="radio" name="trip" class="mr-2" checked>ONE WAY</label>
+        <label><input type="radio" name="trip" class="mr-2">ROUND TRIP</label>
+        <label><input type="radio" name="trip" class="mr-2">MULTI-CITY</label>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
+        <input type="text" placeholder="Delhi, India" class="p-3 rounded text-black" />
+        <input type="text" placeholder="Arrival City or Airport" class="p-3 rounded text-black" />
+         <input
+          id="excursionDates"
+          type="text"
+          placeholder="Select Dates"
+          class="p-3 rounded w-48"
+        />
+         <input
+          id="excursionDates"
+          type="text"
+          placeholder="Select Dates"
+          class="p-3 rounded w-48"
+        />
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <input type="number" min="1" value="1" class="p-3 rounded text-black" placeholder="Passengers" />
+        <div class="flex space-x-4 items-center">
+          <label class="flex items-center"><input type="radio" name="fare" class="mr-1" checked><span class="text-sm">Regular</span></label>
+          <label class="flex items-center"><input type="radio" name="fare" class="mr-1"><span class="text-sm">Student</span></label>
+          <label class="flex items-center"><input type="radio" name="fare" class="mr-1"><span class="text-sm">Senior</span></label>
+        </div>
+      </div>
+      <button class="w-full bg-black text-white py-3 rounded hover:bg-black-300 transition">SEARCH</button>
+    </div>
+
+    <!-- Hotels Tab -->
+    <div
+      id="Hotels"
+      class="max-w-4xl mx-auto bg-blue-800 p-6 rounded-lg shadow-lg text-white hidden"
+    >
+      <form class="flex flex-wrap gap-4 items-center">
+        <input
+          type="text"
+          placeholder="Destination, hotel name"
+          class="flex-grow p-3 rounded"
+        />
+        <input
+          id="hotelDates"
+          type="text"
+          placeholder="Select Dates"
+          class="p-3 rounded w-48"
+        />
+        <input
+          id="hotelTravelers"
+          type="text"
+          placeholder="1 Room 2 Guests"
+          readonly
+          class="p-3 rounded w-48 cursor-pointer"
+          onclick="toggleTravelerModal()"
+        />
+        <button
+          type="submit"
+          class="bg-black text-white px-6 py-3 rounded font-semibold hover:bg-black-300"
+        >
+          Search Hotels
+        </button>
+      </form>
+    </div>
+
+    <!-- Hotels + Flights Tab -->
+    <div
+      id="Hotels + Flights"
+      class="max-w-4xl mx-auto bg-blue-800 p-6 rounded-lg shadow-lg text-white hidden"
+    >
+      <form class="flex flex-wrap gap-4 items-center">
+        <input
+          type="text"
+          placeholder="From city or airport"
+          class="flex-grow p-3 rounded"
+        />
+        <input
+          type="text"
+          placeholder="To city or airport"
+          class="flex-grow p-3 rounded"
+        />
+        <input
+          id="comboDates"
+          type="text"
+          placeholder="Select Dates"
+          class="p-3 rounded w-48"
+        />
+        <input
+          id="comboTravelers"
+          type="text"
+          placeholder="1 Room 2 Guests"
+          readonly
+          class="p-3 rounded w-48 cursor-pointer"
+          onclick="toggleTravelerModal()"
+        />
+        <button
+          type="submit"
+          class="bg-black text-white px-6 py-3 rounded font-semibold hover:bg-black-300"
+        >
+          Search Package
+        </button>
+      </form>
+    </div>
+
+    <!-- Excursions Tab -->
+    <div
+      id="Excursions"
+      class="max-w-4xl mx-auto bg-blue-800 p-6 rounded-lg shadow-lg text-white hidden"
+    >
+      <form class="flex flex-wrap gap-4 items-center">
+        <input
+          type="text"
+          placeholder="Where to?"
+          class="flex-grow p-3 rounded"
+        />
+        <input
+          id="excursionDates"
+          type="text"
+          placeholder="Select Dates"
+          class="p-3 rounded w-48"
+        />
+        <button
+          type="submit"
+          class="bg-black text-white px-6 py-3 rounded font-semibold hover:bg-black-300"
+        >
+          Search Excursions
+        </button>
+      </form>
+    </div>
+
+    <!-- Cars Tab -->
+    <div
+      id="Cars"
+      class="max-w-4xl mx-auto bg-blue-800 p-6 rounded-lg shadow-lg text-white hidden"
+    >
+ <div class="flex flex-wrap gap-4 items-center">
+        <input type="text" placeholder="Pickup Location" class="p-3 rounded text-black w-full md:w-auto" />
+        <input type="text" placeholder="Dropoff Location" class="p-3 rounded text-black w-full md:w-auto" />
+        <input type="text" placeholder="Car Type" class="p-3 rounded text-black w-full md:w-auto" />
+         <input
+          id="excursionDates"
+          type="text"
+          placeholder="Select Dates"
+          class="p-3 rounded w-48"
+        />
+        <select class="p-3 rounded text-black w-full md:w-auto">
+          <option value="">Pickup Time</option>
+         <option value="00:00">00:00</option>
+  <option value="00:30">00:30</option>
+  <option value="01:00">01:00</option>
+  <option value="01:30">01:30</option>
+  <option value="02:00">02:00</option>
+  <option value="02:30">02:30</option>
+  <option value="03:00">03:00</option>
+  <option value="03:30">03:30</option>
+  <option value="04:00">04:00</option>
+  <option value="04:30">04:30</option>
+  <option value="05:00">05:00</option>
+  <option value="05:30">05:30</option>
+  <option value="06:00">06:00</option>
+  <option value="06:30">06:30</option>
+  <option value="07:00">07:00</option>
+  <option value="07:30">07:30</option>
+  <option value="08:00">08:00</option>
+  <option value="08:30">08:30</option>
+  <option value="09:00">09:00</option>
+  <option value="09:30">09:30</option>
+  <option value="10:00">10:00</option>
+  <option value="10:30">10:30</option>
+  <option value="11:00">11:00</option>
+  <option value="11:30">11:30</option>
+  <option value="12:00">12:00</option>
+  <option value="12:30">12:30</option>
+  <option value="13:00">13:00</option>
+  <option value="13:30">13:30</option>
+  <option value="14:00">14:00</option>
+  <option value="14:30">14:30</option>
+  <option value="15:00">15:00</option>
+  <option value="15:30">15:30</option>
+  <option value="16:00">16:00</option>
+  <option value="16:30">16:30</option>
+  <option value="17:00">17:00</option>
+  <option value="17:30">17:30</option>
+  <option value="18:00">18:00</option>
+  <option value="18:30">18:30</option>
+  <option value="19:00">19:00</option>
+  <option value="19:30">19:30</option>
+  <option value="20:00">20:00</option>
+  <option value="20:30">20:30</option>
+  <option value="21:00">21:00</option>
+  <option value="21:30">21:30</option>
+  <option value="22:00">22:00</option>
+  <option value="22:30">22:30</option>
+  <option value="23:00">23:00</option>
+  <option value="23:30">23:30</option>
+</select>
+         <input
+          id="excursionDates"
+          type="text"
+          placeholder="Select Dates"
+          class="p-3 rounded w-48"
+        />
+        <select class="p-3 rounded text-black w-full md:w-auto">
+          <option value="">Return Time</option>
+         <option value="00:00">00:00</option>
+  <option value="00:30">00:30</option>
+  <option value="01:00">01:00</option>
+  <option value="01:30">01:30</option>
+  <option value="02:00">02:00</option>
+  <option value="02:30">02:30</option>
+  <option value="03:00">03:00</option>
+  <option value="03:30">03:30</option>
+  <option value="04:00">04:00</option>
+  <option value="04:30">04:30</option>
+  <option value="05:00">05:00</option>
+  <option value="05:30">05:30</option>
+  <option value="06:00">06:00</option>
+  <option value="06:30">06:30</option>
+  <option value="07:00">07:00</option>
+  <option value="07:30">07:30</option>
+  <option value="08:00">08:00</option>
+  <option value="08:30">08:30</option>
+  <option value="09:00">09:00</option>
+  <option value="09:30">09:30</option>
+  <option value="10:00">10:00</option>
+  <option value="10:30">10:30</option>
+  <option value="11:00">11:00</option>
+  <option value="11:30">11:30</option>
+  <option value="12:00">12:00</option>
+  <option value="12:30">12:30</option>
+  <option value="13:00">13:00</option>
+  <option value="13:30">13:30</option>
+  <option value="14:00">14:00</option>
+  <option value="14:30">14:30</option>
+  <option value="15:00">15:00</option>
+  <option value="15:30">15:30</option>
+  <option value="16:00">16:00</option>
+  <option value="16:30">16:30</option>
+  <option value="17:00">17:00</option>
+  <option value="17:30">17:30</option>
+  <option value="18:00">18:00</option>
+  <option value="18:30">18:30</option>
+  <option value="19:00">19:00</option>
+  <option value="19:30">19:30</option>
+  <option value="20:00">20:00</option>
+  <option value="20:30">20:30</option>
+  <option value="21:00">21:00</option>
+  <option value="21:30">21:30</option>
+  <option value="22:00">22:00</option>
+  <option value="22:30">22:30</option>
+  <option value="23:00">23:00</option>
+  <option value="23:30">23:30</option>
+</select>
+        <label class="flex items-center space-x-2">
+          <input type="checkbox" />
+          <span>Return to different location</span>
+        </label>
+        <button class="bg-black text-white px-6 py-3 rounded hover:bg-black-400 transition">SEARCH</button>
+      </div>
+    </div>
+
+  <!-- Traveler modal (hidden by default) -->
+  <div
+    id="travelerModal"
+    class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center hidden z-50"
+  >
+    <div class="bg-white p-6 rounded shadow-lg w-80">
+      <h2 class="text-xl font-bold mb-4">Select Travelers and Rooms</h2>
+      <label class="block mb-2">
+        Rooms
+        <input id="roomsInput" type="number" min="1" value="1" class="w-full p-2 border rounded" />
+      </label>
+      <label class="block mb-2">
+        Adults
+        <input id="adultsInput" type="number" min="1" value="2" class="w-full p-2 border rounded" />
+      </label>
+      <label class="block mb-4">
+        Children
+        <input id="childrenInput" type="number" min="0" value="0" class="w-full p-2 border rounded" />
+      </label>
+      <div class="flex justify-end gap-4">
+        <button onclick="toggleTravelerModal()" class="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
+        <button onclick="applyTravelerSelection()" class="px-4 py-2 bg-yellow-400 rounded hover:bg-yellow-300">Apply</button>
+      </div>
+    </div>
+  </div>
+  <footer class="bg-black bg-opacity-80 text-white py-8 mt-16">
+    <div class="max-w-7xl mx-auto px-4 text-center">
+      <h2 class="text-2xl font-bold text-yellow-400 mb-2">Wanderlust</h2>
+      <p class="mb-4">Explore. Discover. Book. Travel made simple.</p>
+      <p class="text-sm text-gray-400">&copy; 2025 Wanderlust. All rights reserved.</p>
+    </div>
+  </footer>
+  
+
+  <script>
+    // Tab switching logic
+    function selectTab(button) {
+      // Remove active styles from all tabs in the same container
+      const tabs = button.parentNode.querySelectorAll("button");
+      tabs.forEach((btn) => {
+        btn.classList.remove("font-semibold", "border-b-2", "border-white");
+        btn.classList.add("text-gray-300");
+      });
+
+      // Add active styles to clicked tab
+      button.classList.add("font-semibold", "border-b-2", "border-white");
+      button.classList.remove("text-gray-300");
+
+      // Show relevant content using data-tab attribute
+      const tabName = button.getAttribute("data-tab");
+      const tabIds = ["Flights", "Hotels", "Hotels + Flights", "Excursions", "Cars"];
+      tabIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.display = id === tabName ? "block" : "none";
+        }
+      });
+    }
+
+    // Traveler modal toggle
+    function toggleTravelerModal() {
+      const modal = document.getElementById("travelerModal");
+      modal.classList.toggle("hidden");
+    }
+
+    // Apply traveler modal selections
+    function applyTravelerSelection() {
+      const rooms = document.getElementById("roomsInput").value;
+      const adults = document.getElementById("adultsInput").value;
+      const children = document.getElementById("childrenInput").value;
+      const totalGuests = Number(adults) + Number(children);
+      const summary = `${rooms} Room(s) ${totalGuests} Guests`;
+
+      // Update all traveler input placeholders/values on the page
+      const travelerInputs = [
+        document.getElementById("hotelTravelers"),
+        document.getElementById("comboTravelers"),
+      ];
+      travelerInputs.forEach((input) => {
+        if (input) {
+          input.value = summary;
+        }
+      });
+
+      toggleTravelerModal();
+    }
+
+    // Initialize flatpickr datepickers
+    flatpickr("#hotelDates", {
+      mode: "range",
+      minDate: "today",
+      dateFormat: "Y-m-d",
+    });
+    flatpickr("#comboDates", {
+      mode: "range",
+      minDate: "today",
+      dateFormat: "Y-m-d",
+    });
+    flatpickr("#excursionDates", {
+      mode: "range",
+      minDate: "today",
+      dateFormat: "Y-m-d",
+    });
+    flatpickr("#flightDate", {
+      mode: "single",
+      minDate: "today",
+      dateFormat: "Y-m-d",
+    });
+    
+
+    // On page load, select the Flights tab by default from original tabs or emoji tabs depending on viewport
+    window.addEventListener("DOMContentLoaded", () => {
+      // Prefer visible tab container to pick first button from
+      let tabContainer;
+      if (window.innerWidth <= 768) {
+        tabContainer = document.getElementById("emojiTabs");
+      } else {
+        tabContainer = document.getElementById("originalTabs");
+      }
+      const firstTab = tabContainer?.querySelector("button");
+      if (firstTab) {
+        selectTab(firstTab);
+      }
+    });
+  </script>
+</body>
+</html>
